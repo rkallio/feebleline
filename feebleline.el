@@ -64,10 +64,9 @@
 (defun feebleline-git-branch ()
   "Return current git branch, unless file is remote."
   (require 'vc-git)
-  (if (and (buffer-file-name) (file-remote-p (buffer-file-name)))
-      ""
-    (or (car (vc-git-branches))
-        "")))
+  (let ((file-name (buffer-file-name)))
+    (unless (and file-name (file-remote-p file-name))
+      (car (vc-git-branches)))))
 
 (defcustom feebleline-msg-functions
   '((feebleline-line-number         :post "" :fmt "%5s")
